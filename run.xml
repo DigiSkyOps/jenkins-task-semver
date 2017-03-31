@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="updatePyVer" default="updatePyVer">
+
+    <!--
+    args:
+    -->
+    <target name="updatePyVer">
+
+        <property name="scm.type" value="svn" />
+
+        <property name="version.file" value="${ws.dir}/VERSION" />
+        <property name="version.number" value=""/>
+
+        <var name="##version.number##" value="${version.number}"/>
+
+        <if>
+            <equals arg1="${##version.number##}" arg2="" trim="true" />
+            <then>
+                <if>
+                    <equals arg1="${scm.type}" arg2="svn" trim="true" />
+                    <then>
+                        <echo message="--// get svn revision..." />
+                        <get-svn-info targetFile="${ws.dir}" svnRevisionProperty="artifact.svn.revision" svnUrlProperty="artifact.svn.url" />
+                        <var name="##version.number##" value="${artifact.svn.revision}" />
+                        <echo message="--// svn.revsion: ${##version.number##}" />
+                    </then>
+                    <elseif>
+                        <equals arg1="${scm.type}" arg2="git" trim="true" />
+                        <then>
+                            <echo message="${ws.dir}" />
+                            <get-git-commit-id repoDir="${ws.dir}" />
+                            <var name="##version.number##" value="${git.commit.id}" />
+                            <echo message="--// git.commit.id: ${##version.number##}" />
+                        </then>
+                    </elseif>
+                    <else>
+                        <fail message="--// scm.type: ${scm.type} is not supported." />
+                    </else>
+                </if>
+            </then>
+        </if>
+
+
+        <echo message="${##version.number##}" file="${version.file}"/>
+    </target>
+
+</project>
