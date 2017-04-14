@@ -21,7 +21,7 @@
                     <then>
                         <echo message="--// get svn revision..." />
                         <get-svn-info targetFile="${ws.dir}" svnRevisionProperty="artifact.svn.revision" svnUrlProperty="artifact.svn.url" />
-                        <var name="##version.number##" value="${artifact.svn.revision}" />
+                        <var name="##version.number##" value="${artifact.svn.revision}.1" />
                         <echo message="--// svn.revsion: ${##version.number##}" />
                     </then>
                     <elseif>
@@ -29,7 +29,7 @@
                         <then>
                             <echo message="${ws.dir}" />
                             <get-git-commit-id repoDir="${ws.dir}" />
-                            <var name="##version.number##" value="${git.commit.id}" />
+                            <var name="##version.number##" value="${git.commit.id}.1" />
                             <echo message="--// git.commit.id: ${##version.number##}" />
                         </then>
                     </elseif>
@@ -37,11 +37,22 @@
                         <fail message="--// scm.type: ${scm.type} is not supported." />
                     </else>
                 </if>
+                <if>
+                    <available file="${version.file}" />
+                    <then>
+                        <loadfile property="production.version" srcFile="${version.file}" failonerror="true" />
+                        <echo message="${production.version}+${##version.number##}" file="${version.file}"/>
+                    </then>
+                    <else>
+                        <echo message="1.0.0+${##version.number##}" file="${version.file}"/>
+                    </else>
+                </if>
             </then>
+            <else>
+                <echo message="${##version.number##}" file="${version.file}"/>
+            </else>
         </if>
 
-
-        <echo message="${##version.number##}" file="${version.file}"/>
     </target>
 
 </project>
