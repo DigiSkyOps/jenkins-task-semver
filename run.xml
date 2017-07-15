@@ -32,7 +32,8 @@
                             <echo message="${ws.dir}" />
                             <getGitCommitId repoDir="${ws.dir}" />
                             <var name="##version.number##" value="${git.short.commit.id}.1" />
-                            <echo message="--// git.commit.id: ${##version.number##}" />
+                            <echo message="--// git.commit.id: ${git.commit.id}"/>
+                            <echo message="--// version.number: ${##version.number##}" />
                         </then>
                     </elseif>
                     <else>
@@ -42,7 +43,7 @@
                 <if>
                     <available file="${version.file}" />
                     <then>
-                        <getVersionFromVersion versionFile="${version.file}" versionProperty="production.version" />
+                        <getVersionFromFile versionFile="${version.file}" versionProperty="production.version" />
                         <echo message="${production.version}+${##version.number##}" file="${version.file}"/>
                     </then>
                     <else>
