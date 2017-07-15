@@ -22,7 +22,7 @@
                     <equals arg1="${scm.type}" arg2="svn" trim="true" />
                     <then>
                         <echo message="--// get svn revision..." />
-                        <get-svn-info targetFile="${ws.dir}" svnRevisionProperty="artifact.svn.revision" svnUrlProperty="artifact.svn.url" />
+                        <getSvnInfo targetFile="${ws.dir}" svnRevisionProperty="artifact.svn.revision" svnUrlProperty="artifact.svn.url" />
                         <var name="##version.number##" value="${artifact.svn.revision}.1" />
                         <echo message="--// svn.revsion: ${##version.number##}" />
                     </then>
@@ -30,8 +30,8 @@
                         <equals arg1="${scm.type}" arg2="git" trim="true" />
                         <then>
                             <echo message="${ws.dir}" />
-                            <get-git-commit-id repoDir="${ws.dir}" />
-                            <var name="##version.number##" value="${git.commit.id}.1" />
+                            <getGitCommitId repoDir="${ws.dir}" />
+                            <var name="##version.number##" value="${git.short.commit.id}.1" />
                             <echo message="--// git.commit.id: ${##version.number##}" />
                         </then>
                     </elseif>
@@ -42,7 +42,7 @@
                 <if>
                     <available file="${version.file}" />
                     <then>
-                        <loadfile property="production.version" srcFile="${version.file}" failonerror="true" />
+                        <getVersionFromVersion versionFile="${version.file}" versionProperty="production.version" />
                         <echo message="${production.version}+${##version.number##}" file="${version.file}"/>
                     </then>
                     <else>
