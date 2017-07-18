@@ -12,8 +12,9 @@
 
         <property name="version.file" value="${ws.dir}/VERSION" />
         <property name="version.number" value=""/>
+        <property name="artifact.version" value="${version.number}"/>
 
-        <var name="##version.number##" value="${version.number}"/>
+        <var name="##version.number##" value="${artifact.version}"/>
 
         <if>
             <equals arg1="${##version.number##}" arg2="" trim="true" />
