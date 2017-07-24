@@ -41,22 +41,11 @@
                         <fail message="--// scm.type: ${scm.type} is not supported." />
                     </else>
                 </if>
-                <if>
-                    <available file="${version.file}" />
-                    <then>
-                        <getVersionFromFile versionFile="${version.file}" versionProperty="production.version" />
-                        <echo message="${production.version}+${##version.number##}" file="${version.file}"/>
-                    </then>
-                    <else>
-                        <echo message="1.0.0+${##version.number##}" file="${version.file}"/>
-                    </else>
-                </if>
             </then>
-            <else>
-                <echo message="${##version.number##}" file="${version.file}"/>
-            </else>
         </if>
 
+        <echo message="${##version.number##}" file="${version.file}"/>
+        <echo message="--// version.number: ${##version.number##} " />
     </target>
 
 </project>
